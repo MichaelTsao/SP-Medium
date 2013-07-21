@@ -1,0 +1,240 @@
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title><? echo $this->escape($this->title); ?></title>
+<link href="/css/templatemo_style.css" rel="stylesheet" type="text/css" />
+<link href="/css/jquery.ennui.contentslider.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<script language="javascript" type="text/javascript">
+function clearText(field)
+{
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+
+function checkAll(chked)
+{
+	obj_data = document.getElementsByName("checked_id");
+
+	for(i=0; i<obj_data.length; i++)
+	{
+		obj_data[i].checked = chked;
+	}
+}
+
+function getChecked()
+{
+	var id_array = [];
+	obj_data = document.getElementsByName("checked_id");
+
+	for(i=0; i<obj_data.length; i++)
+	{
+		if(obj_data[i].checked)
+			id_array.push(obj_data[i].value);
+	}
+	return id_array;
+}
+
+function multiEdit()
+{
+	var ids = getChecked();
+	document.getElementById('me_form_id').value = ids.join('|');
+	document.getElementById('me_form').submit();
+}
+
+function setValue(id)
+{
+	var fields = new Array(<? echo '"' . implode('","', $this->fields) . '"'; ?>);
+	for(i=0; i<fields.length; i++)
+	{
+		key = fields[i] + "_" + id;
+		value = document.getElementById(key).innerHTML;
+		if(value == "&nbsp;")
+			value = "";
+		target = document.getElementById('edit_form_' + fields[i]);
+		if(target != undefined)
+		{
+			if(target.type == "text" || target.type == "hidden")
+				target.value = value;
+			else
+			{
+				for(j=0; j<target.length; j++)
+				{
+					if(target.options[j].innerHTML == value)
+						target.options[j].selected = true;
+				}
+			}
+		}
+	}
+	document.getElementById('edit_form_id').value = id;
+}
+</script>
+
+<link media="screen" rel="stylesheet" href="/css/colorbox.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="/js/jquery.colorbox.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$(".search").colorbox({width:"<? echo $this->menu_width['search']; ?>", inline:true, href:"#search_div"});
+		$(".add").colorbox({width:"<? echo $this->menu_width['add']; ?>", inline:true, href:"#add_div"});
+		$(".multi_edit").colorbox({width:"<? echo $this->menu_width['edit']; ?>", inline:true, href:"#multi_edit_div"});
+		$(".edit").colorbox({width:"<? echo $this->menu_width['edit']; ?>", inline:true, href:"#edit_div"});
+		$(".assign").colorbox({width:"500", inline:true, href:"#assign_div"});
+	});
+</script>
+
+</head>
+
+<style type="text/css"> 
+/* CSS Document */
+
+body { 
+    font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+    color: #4f6b72; 
+    background: #E6EAE9; 
+}
+
+a { 
+    color: #4f6b72/*#c75f3e*/;
+	text-decoration:none;
+}
+
+#mytable { 
+    width: <?= $this->table_width ? $this->table_width : 700 ?>px; 
+    padding: 0; 
+    margin: 0; 
+}
+
+caption { 
+    padding: 0 0 5px 0; 
+    width: 700px;      
+    font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+    text-align: right; 
+}
+
+th { 
+    font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+    color: #4f6b72; 
+    border-right: 1px solid #C1DAD7; 
+    border-bottom: 1px solid #C1DAD7; 
+    border-top: 1px solid #C1DAD7; 
+    letter-spacing: 2px; 
+    text-transform: uppercase; 
+    text-align: left; 
+    padding: 6px 6px 6px 12px; 
+    background: #CAE8EA; 
+}
+
+th.nobg { 
+    border-top: 0; 
+    border-left: 0; 
+    border-right: 1px solid #C1DAD7; 
+    background: none; 
+}
+
+td { 
+    border-right: 1px solid #C1DAD7; 
+    border-bottom: 1px solid #C1DAD7; 
+    background: #fff; 
+    font-size:11px; 
+    padding: 6px 6px 6px 12px; 
+    color: #4f6b72; 
+}
+
+td.no { 
+    border: 0px; 
+}
+
+td.alt { 
+    background: #F5FAFA; 
+    color: #797268; 
+}
+
+td.altt { 
+    background: #C8F084; 
+    color: #797268; 
+}
+
+td.pagi { 
+    color: #4f6b72; 
+    border-right: 1px solid #C1DAD7; 
+    border-bottom: 1px solid #C1DAD7; 
+    border-top: 1px solid #C1DAD7; 
+    text-transform: uppercase; 
+    padding: 6px 6px 6px 12px; 
+    background: #CAE8EA; 
+}
+
+th.spec { 
+    border-left: 1px solid #C1DAD7; 
+    border-top: 0; 
+    background: #fff; 
+    font: bolder 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif, "新宋体";
+}
+
+th.specalt { 
+    border-left: 1px solid #C1DAD7; 
+    border-top: 0; 
+    background: #f5fafa; 
+    font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+    color: #797268; 
+} 
+/*---------for IE 5.x bug*/ 
+html>body td{ font-size:11px;} 
+</style> 
+
+<body>
+	
+<div id="templatemo_header_wrapper">
+	<div id="templatemo_header">
+		<div id="site_logo"><? echo $this->escape($this->site_title); ?></div>
+	</div> <!-- end of header -->
+</div> <!-- end of header wrapper -->
+	
+<div id="templatemo_menu_wrapper">   
+  <div id="templatemo_menu">
+	  <ul>
+	  	<?
+	  	foreach($this->nav as $dest => $name)
+	  	{
+	  		$arr = explode('|', $dest);
+	  		$con = $arr[0];
+	  		$act = isset($arr[1]) ? $arr[1] : 'index';
+	  		
+	  		$url = $this->url(array(
+	  					'controller' => $con,
+	  					'action'     => $act
+	  		), null, true);
+	  		
+      		echo '<li><a href="'.$url.'"';
+      		if($con == $this->controller)
+      			echo ' class="current"';
+      		echo ">$name</a></li>";
+      	}
+      ?>
+    </ul>    	
+  </div> <!-- end of menu -->
+</div> <!-- end of menu wrapper -->
+
+<div id="tempatemo_content_wrapper">
+            <div id="column_w610">
+            
+	<?php echo $this->layout()->content; ?>
+
+            </div> <!-- end of column w610 -->
+            <div class="cleaner"></div>
+        <div class="cleaner"></div>
+</div> <!-- end of content wrapper -->
+	
+<div id="templatemo_footer_wrapper">
+	<div id="templatemo_footer">
+        <div class="section_w920">
+        Copyright &copy; 2011 <?php echo $this->company_name; ?>
+        </div>
+        <div class="cleaner"></div>
+    </div> <!-- end of footer -->
+</div> <!-- end of footer -->
+
+</body>
+</html>

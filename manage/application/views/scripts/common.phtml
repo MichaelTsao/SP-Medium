@@ -1,0 +1,200 @@
+<div align=center>
+
+<!-- Menus -->
+	<? $this->edit_form->sbutton->setOptions(array('label' => '修改'));	?>
+	<div style='display:none'>
+		<div id="edit_div">
+			<b>修改数据</b><br>
+			<?php
+				echo $this->showForm($this->edit_form, $this->menu_column);
+			?>
+		</div>
+
+		<div id="search_div">
+			<b>搜索数据</b><br>
+			<?php
+			$this->search_form->sbutton->setOptions(array('label' => '精确搜索'));
+			echo $this->showForm($this->search_form, $this->menu_column);
+			?>
+		</div>
+
+		<div id="add_div">
+			<b>添加数据</b><br>
+			<?php
+		    $this->add_form->sbutton->setOptions(array('label' => '添加'));
+		    echo $this->showForm($this->add_form, $this->menu_column);
+			?>
+		</div>
+
+		<div id="multi_edit_div">
+			<b>修改数据</b><br>
+			<?php
+		    $this->multiedit_form->sbutton->setOptions(array('label' => '修改', 'onclick' => "multiEdit()"));
+		    foreach($this->multiedit_form->getElements() as $element){
+		    	$element->addDecorator('Multiedit');
+		    }
+		    $this->multiedit_form->setName('me_form');
+		    echo $this->showForm($this->multiedit_form, $this->menu_column);
+			?>
+		</div>
+		<div id="multi_edit_error">
+			<br><p><b><h2 align="center">请先勾选数据</h2></b></p>
+		</div>
+		<div id="multi_edit_more">
+			<br><p><b><h2 align="center">请勾选多条数据</h2></b></p>
+		</div>
+	</div>
+
+	<script language="javascript">
+		med_content = document.getElementById('multi_edit_div').innerHTML;
+		med_error1 = document.getElementById('multi_edit_error').innerHTML;
+		med_error2 = document.getElementById('multi_edit_more').innerHTML;
+	</script>
+
+<!--     Data Table     -->
+<table id="mytable" cellspacing="0">
+	
+	<!--     Search Info     -->
+ 	<? if($this->search_data): ?>
+	  <tr>
+			<td colspan=<?= count($this->fields) + 2 ?> class="altt">查询条件为：
+		  	<?
+		  		if($this->search_type)
+		  			$w = '包含';
+		  		else
+		  			$w = '是';
+		  		foreach($this->search_data as $key => $value)
+		  		{
+		  			if($this->search_form->$key instanceof Zend_Form_Element_Select)
+		  			{
+							$options = $this->search_form->$key->getMultiOptions();
+							$value = $options[$value];
+							$w = '是';
+		  			}
+		  			$cond[] = $this->escape($this->fields_name[$key]) . $w . "'" . $this->escape($value) . "'";
+		  		}
+		  		echo implode('；', $cond);
+		    ?>
+	    &nbsp;&nbsp;&nbsp;&nbsp;<a href=<?= $this->url(array('controller' => $this->controller,'action' => 'index')) ?>>清空条件</a></td>
+	  </tr>
+ 	<? endif ?>
+ 	
+<tr><td class="pagi" colspan=<? echo count($this->fields) + 2 ?>>
+
+	<!--     Search Button     -->
+	<input type=button value="搜 索" class='search'>&nbsp;&nbsp;
+	
+	<? if($this->controller != 'assigned' && $this->readonly != 1): ?>
+	<!--     Add Button     -->
+	<input type=button value="添 加" class='add'>&nbsp;&nbsp;
+
+	<!--     Edit Button     -->
+	<input type=button value="修 改" onclick="ids = getChecked();  med = document.getElementById('multi_edit_div'); if(ids.length == 0)med.innerHTML=med_error1; else if(ids.length == 1)med.innerHTML=med_error2; else med.innerHTML=med_content" class='multi_edit'>&nbsp;&nbsp;
+	
+	<!--     Delete Button     -->
+	<input type=button value="删 除" onclick="ids = getChecked(); if(ids.length == 0)alert('请先勾选数据'); else if(confirm('确实要删除'+ids.length+'条数据？'))location.href='<?= $this->url(array('controller' => $this->controller,'action' => 'delete')) ?>' + '/id/' + ids.join('|');">&nbsp;&nbsp;
+	<? endif; ?>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<? $this->showPaginator($this); ?>
+</td></tr>
+ 	
+	<!--     Caption     -->
+<caption> </caption> 
+  <tr> 
+	<th scope="col" width=30><input type=checkbox onclick="checkAll(this.checked)"></th>
+  	<? foreach($this->fields as $field): ?>
+    <th scope="col"><?= isset($this->fields_name[$field]) ? $this->escape($this->fields_name[$field]) : $this->escape($field); ?></th>
+    <? endforeach ?>
+    <? if($this->readonly != 1): ?>
+    <th>操作</th>
+    <? endif ?>
+  </tr>
+
+	<!--     Data Sheet     -->
+	<? $i=1; foreach($this->data as $one): ?>
+	<tr>
+		
+		<!--     Data Row     -->
+		<th scope="row" class="<?= $i % 2 == 0 ? 'spec' : 'specalt' ?>"><input type=checkbox name="checked_id" value="<?= $one['id'] ?>"></th>
+  	<? foreach($this->fields as $key): ?>
+  		<?
+			$oneKey = $one[$key];
+			if ($this->normal_form->$key instanceof Zend_Form_Element_Select)
+			{
+				$options = $this->normal_form->$key->getMultiOptions();
+				isset($options[$oneKey]) && $oneKey = $options[$oneKey];
+			}
+		?>  		 	
+		<td id="<? echo $key . '_' . $one['id']; ?>" class="<?= $i % 2 == 0 ? '' : 'alt' ?>"><? if($oneKey === '' || is_null($oneKey)) echo '&nbsp;'; else echo $this->escape($oneKey) ?></td>
+    <? endforeach; ?>
+		<!--     Data Row End      -->
+
+		<!--     Operation Button     -->
+    <? if($this->readonly != 1): ?>
+		<td class="<?= $i % 2 == 0 ? '' : 'alt' ?>" width=110>
+
+		<? if($this->controller != 'assigned'): ?>
+			<input type=button value="修改" onclick="setValue(<? echo $one['id']; ?>)" class='edit'>
+			&nbsp;
+
+			<input type=button onclick="if(confirm('确实要删除？'))location.href='<?= $this->url(array('controller' => $this->controller,'action' => 'delete','id' => $one['id'])) ?>'" value="删除">
+		<? endif; ?>
+		
+			<? if ($this->controller == 'assigned') : ?>
+				<input type=button onclick="if(confirm('确实要回收？'))location.href='<?= $this->url(array('controller' => $this->controller,'action' => 'unassign','id' => $one['id'])) ?>'" value="回收">
+			<? endif ?>
+			
+			<? if ($this->controller == 'command') : ?>
+				<input type=button <? if(!$one['assignable']) echo "disabled"; ?> onclick="assign_form.action='<? echo $this->url(array('controller' => $this->controller,'action' => 'assign','id' => $one['id'])); ?>'" <? if($one['assignable']) echo "class=\"assign\""; ?> value="分配">
+			<? endif ?>
+		</td>
+    <? endif ?>
+  	<!--    Operation Button End    -->
+  	
+	</tr> 
+  <? $i++; endforeach ?>
+
+<tr><td class="pagi" colspan=<? echo count($this->fields) + 2 ?>>
+
+	<!--     Search Button     -->
+	<input type=button value="搜 索" class='search'>&nbsp;&nbsp;
+	
+	<? if($this->controller != 'assigned' && $this->readonly != 1): ?>
+	<!--     Add Button     -->
+	<input type=button value="添 加" class='add'>&nbsp;&nbsp;
+
+	<!--     Edit Button     -->
+	<input type=button value="修 改" onclick="ids = getChecked();  med = document.getElementById('multi_edit_div'); if(ids.length == 0)med.innerHTML=med_error1; else if(ids.length == 1)med.innerHTML=med_error2; else med.innerHTML=med_content" class='multi_edit'>&nbsp;&nbsp;
+	
+	<!--     Delete Button     -->
+	<input type=button value="删 除" onclick="ids = getChecked(); if(ids.length == 0)alert('请先勾选数据'); else if(confirm('确实要删除'+ids.length+'条数据？'))location.href='<?= $this->url(array('controller' => $this->controller,'action' => 'delete')) ?>' + '/id/' + ids.join('|');">&nbsp;&nbsp;
+	<? endif; ?>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<? $this->showPaginator($this); ?>
+</td></tr>
+  <!--    Data Sheet End    -->
+  
+</table>
+
+<div style='display:none'>
+	<div id="assign_div">
+	<b>分配指令</b><br>
+		<form id="assign_form" name="assign_form" method="post" action="">
+			<label for=userid>客户</label>
+			<? 
+				$scode = "<select name=userid id=userid>";
+				foreach($this->customer as $key => $show)
+				{
+					$scode .= '<option value="' .$key . '">' . $show . '</option>';
+				}
+				$scode .= '</select>';
+				echo $scode;
+			?>
+			&nbsp;&nbsp;<label for=unique_name>渠道项</label><input type=text id=unique_name name=unique_name><br>
+			<label for=unique_command>指令</label><input type=text id=unique_command name=unique_command><br>
+			<input type=submit value=分配>
+		</form>
+	</div>
+</div>
+
+</div>

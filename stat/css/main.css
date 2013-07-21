@@ -1,0 +1,77 @@
+td {
+	font-size: 9pt;
+}
+a:link {
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: none;
+}
+a:visited {
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: none;
+}
+a:hover {
+	font-size: 9pt;
+	color: #0099FF;
+	text-decoration: underline;
+}
+a.r:link {
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: underline;
+}
+a.r:visited {
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: underline;
+}
+a.r:hover {
+	font-size: 9pt;
+	color: #FF0000;
+	text-decoration: none;
+}
+.topline {
+	border-top-width: 1pt;
+	border-top-style: dashed;
+	border-top-color: #000000;
+}
+.input_new {
+	font-family: "Tahoma", "Arial"; 
+	font-size: 12px; color: #333333; 
+	border: 1 solid #F8C460; 
+	background-color: #FFFFFF
+  }
+.text_new {
+	background:#ffffff;
+	border-bottom-color:#0099CC; 
+	border-bottom-width:1px;
+	border-top-width:0px;
+	border-left-width:0px;
+	border-right-width:0px; solid #ff6633; 
+	color: #000000; 
+	FONT-SIZE: 9pt; 
+	FONT-STYLE: normal; 
+	FONT-VARIANT: normal; 
+	FONT-WEIGHT: normal; 
+	HEIGHT: 18px; 
+	LINE-HEIGHT: normal; 
+	text-align: center
+}
+.form_center {
+	text-align:left; 
+	width:250px;
+}
+caption {
+	font-size: 18pt;
+}
+
+.menushow {
+	font-weight: bold;
+	background-color: #66CCFF;
+	cursor:pointer;
+}
+.menuhide {
+	cursor:pointer;
+}
+

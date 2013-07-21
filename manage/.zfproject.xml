@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<projectProfile type="default" version="1.10">
+  <projectDirectory>
+    <projectProfileFile filesystemName=".zfproject.xml"/>
+    <applicationDirectory classNamePrefix="Application_">
+      <apisDirectory enabled="false"/>
+      <configsDirectory>
+        <applicationConfigFile type="ini"/>
+      </configsDirectory>
+      <controllersDirectory>
+        <controllerFile controllerName="Index">
+          <actionMethod actionName="index"/>
+        </controllerFile>
+        <controllerFile controllerName="Error"/>
+        <controllerFile controllerName="SP">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="add"/>
+        </controllerFile>
+      </controllersDirectory>
+      <formsDirectory>
+        <formFile formName="Command"/>
+        <formFile formName="SP"/>
+        <formFile formName="Login"/>
+      </formsDirectory>
+      <layoutsDirectory enabled="false"/>
+      <modelsDirectory>
+        <dbTableDirectory>
+          <dbTableFile dbTableName="Command"/>
+          <dbTableFile dbTableName="SP"/>
+          <dbTableFile dbTableName="CommandArea"/>
+          <dbTableFile dbTableName="CommandAssign"/>
+          <dbTableFile dbTableName="User"/>
+        </dbTableDirectory>
+        <modelFile modelName="Sp"/>
+        <modelFile modelName="Command"/>
+        <modelFile modelName="CommandArea"/>
+        <modelFile modelName="CommandAssign"/>
+        <modelFile modelName="User"/>
+      </modelsDirectory>
+      <modulesDirectory enabled="false"/>
+      <viewsDirectory>
+        <viewScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Error">
+            <viewScriptFile forActionName="error"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="SP">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="SP">
+            <viewScriptFile forActionName="add"/>
+          </viewControllerScriptsDirectory>
+        </viewScriptsDirectory>
+        <viewHelpersDirectory/>
+        <viewFiltersDirectory enabled="false"/>
+      </viewsDirectory>
+      <bootstrapFile filesystemName="Bootstrap.php"/>
+    </applicationDirectory>
+    <dataDirectory enabled="false">
+      <cacheDirectory enabled="false"/>
+      <searchIndexesDirectory enabled="false"/>
+      <localesDirectory enabled="false"/>
+      <logsDirectory enabled="false"/>
+      <sessionsDirectory enabled="false"/>
+      <uploadsDirectory enabled="false"/>
+    </dataDirectory>
+    <docsDirectory>
+      <file filesystemName="README.txt"/>
+    </docsDirectory>
+    <libraryDirectory>
+      <zfStandardLibraryDirectory enabled="false"/>
+    </libraryDirectory>
+    <publicDirectory>
+      <publicStylesheetsDirectory enabled="false"/>
+      <publicScriptsDirectory enabled="false"/>
+      <publicImagesDirectory enabled="false"/>
+      <publicIndexFile filesystemName="index.php"/>
+      <htaccessFile filesystemName=".htaccess"/>
+    </publicDirectory>
+    <projectProvidersDirectory enabled="false"/>
+    <temporaryDirectory enabled="false"/>
+    <testsDirectory>
+      <testPHPUnitConfigFile filesystemName="phpunit.xml"/>
+      <testApplicationDirectory>
+        <testApplicationBootstrapFile filesystemName="bootstrap.php"/>
+        <testApplicationControllerDirectory>
+          <testApplicationControllerFile filesystemName="SPControllerTest.php"/>
+        </testApplicationControllerDirectory>
+      </testApplicationDirectory>
+      <testLibraryDirectory>
+        <testLibraryBootstrapFile filesystemName="bootstrap.php"/>
+      </testLibraryDirectory>
+    </testsDirectory>
+  </projectDirectory>
+</projectProfile>
